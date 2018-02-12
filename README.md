@@ -13,8 +13,8 @@ Run Noise_Experiment_Final.m and Obs_Experiment_Final.m to generate figures from
 
 Requirements:
 
- # Manopt 4.0.0 or latest, available at http://www.manopt.org (necessary)
+*Manopt 4.0.0 or latest, available at http://www.manopt.org (necessary)
 
- # CVX 2.1 or latest, available at http://cvxr.com/cvx/ (necessary)
+*CVX 2.1 or latest, available at http://cvxr.com/cvx/ (necessary)
 
- # Manopt and CVX are available in GitHub directory 
+*Manopt and CVX are available in GitHub directory 
