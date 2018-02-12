@@ -137,7 +137,7 @@ end
 
 
 figure;
-loglog(obs,r_error_1,'r'); 
+loglog(obs,r_error_1,'k'); 
 hold all;
 % loglog(obs,r_error_4,'k');
 loglog(obs,r_error_2,'g');
@@ -148,17 +148,17 @@ loglog(obs,r_error_7,'--','Color',[0.9 0.4 0.4]);
 loglog(obs,r_error_8,'m');
 xlabel('# Observations M');
 ylabel('Relative Error (up to circular shift)');
-legend('Spectral M. largest spectral gap','Spectral M. greatest absolute eig-value','Iterative phase sync.','Optim. on phase manifold', ...,
+legend('Spectral M. largest spectral gap','Iterative phase sync.','Optim. on phase manifold', ...,
 'FM','Phase unwrapping','SDP','Known-shifts oracle','Location','best');
 set(gca, 'FontSize', 12)
 legend('boxoff');
 
 figure;
-loglog(obs,runtime(1,:),'r');
+loglog(obs,runtime(1,:),'k');
 hold all;
-loglog(obs,runtime(2,:),'k');
+% loglog(obs,runtime(2,:),'k');
 loglog(obs,runtime(3,:),'g');
-% loglog(obs,runtime(4,:),'Color',[1.0 0.5 0.0]);
+loglog(obs,runtime(4,:),'Color',[1.0 0.5 0.0]);
 loglog(obs,runtime(5,:),'b--');
 loglog(obs,runtime(6,:),'c--');
 loglog(obs,runtime(7,:),'--','Color',[0.9 0.4 0.4]);
@@ -166,7 +166,7 @@ xlabel('# Observations M');
 ylabel('Computation time(s)');
 
 axis([10 100000 0.0001 100000]);
-legend('Spectral M. largest spectral gap','Spectral M. greatest absolute eig-value','Iterative phase sync.','Optim. on phase manifold', ...,
+legend('Spectral M. largest spectral gap','Iterative phase sync.','Optim. on phase manifold', ...,
 'FM','Phase unwrapping','SDP','Location','best');
 set(gca, 'FontSize', 12)
 legend('boxoff');
