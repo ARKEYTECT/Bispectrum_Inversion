@@ -16,5 +16,3 @@ Requirements:
 *Manopt 4.0.0 or latest, available at http://www.manopt.org (necessary)
 
 *CVX 2.1 or latest, available at http://cvxr.com/cvx/ (necessary)
-
-*Manopt and CVX are available in GitHub directory 
