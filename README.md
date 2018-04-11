@@ -16,3 +16,5 @@ Requirements:
 *Manopt 4.0.0 or latest, available at http://www.manopt.org (necessary)
 
 *CVX 2.1 or latest, available at http://cvxr.com/cvx/ (necessary)
+
+*MILES package, available at https://www.ngs.noaa.gov/gps-toolbox/Miles.htm (necessary)
