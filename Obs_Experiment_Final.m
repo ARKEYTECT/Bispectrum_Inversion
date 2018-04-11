@@ -43,7 +43,7 @@ for  a = 1:length(obs)
         Y_hat = fft(Y,[],1);  
         
         % compute Bispectrum matrix
-        B_mat = get_bispectrum(Y_hat,d,copy);
+        B_mat = get_bispectrum(Y_hat);
         % Power estimate and phase estimate 
         Y_power = mean(abs(Y_hat).^2,2)-d;
         Y_power = max(0, Y_power);
@@ -140,6 +140,7 @@ figure;
 loglog(obs,r_error_1,'k'); 
 hold all;
 % loglog(obs,r_error_4,'k');
+loglog(obs,r_error_jennrich,'r');
 loglog(obs,r_error_2,'g');
 loglog(obs,r_error_3,'Color',[1.0 0.5 0.0]);
 loglog(obs,r_error_5,'b--');
@@ -148,7 +149,7 @@ loglog(obs,r_error_7,'--','Color',[0.9 0.4 0.4]);
 loglog(obs,r_error_8,'m');
 xlabel('# Observations M');
 ylabel('Relative Error (up to circular shift)');
-legend('Spectral M. largest spectral gap','Iterative phase sync.','Optim. on phase manifold', ...,
+legend('Spectral method','Jennrich algorithm','Iterative phase sync.','Optim. on phase manifold', ...,
 'FM','Phase unwrapping','SDP','Known-shifts oracle','Location','best');
 set(gca, 'FontSize', 12)
 legend('boxoff');

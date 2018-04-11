@@ -1,4 +1,4 @@
-function [ RelativeError,t1,t2 ] = homog_v2(bias, x,Y, L, sigma, n )
+function [ RelativeError,t1,t2 ] = homog_v2(bias,x,Y, L, sigma, n )
 %RUN_HOMOG Generates and solves a homogeneous MRA problem via Jennrich
 %   Detailed explanation goes here
 
@@ -16,7 +16,7 @@ function [ RelativeError,t1,t2 ] = homog_v2(bias, x,Y, L, sigma, n )
 % are rotationally invariant, and we delete everything just after to
 % enforce non-cheating
 
-tic;
+tic_feat = tic;
 Emean = mean(mean(Y)); % first moment
 
 %TM = mean(x(:))
@@ -98,11 +98,11 @@ M2
 M3p
 sum(z)
 %}
-t1 = toc;
+t1 = toc(tic_feat);
 
 
 
-tic;
+tic_recon = tic;
 % eigs of pseudoinverse
 G = M3p * pinv(M2);
 %G = M3p * pinv(EM2 + 100*eye(L));
@@ -145,8 +145,8 @@ V = V * sign( Emean * mean(V));
 
 % fix the 2-norm
 V = V * normest / norm(V);
-t2 = toc;
-V = V - bias;
+V = V-bias;
+t2 = toc(tic_recon);
 
 minimum_error = Inf;
 for h=1:L

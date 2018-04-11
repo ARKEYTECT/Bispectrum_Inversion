@@ -10,7 +10,7 @@ obs = [10 100 1000 10000 100000];
 %copy = 100000;
 r_error_1 = 0;
 r_error_2 = 0;
-iter = 50;
+iter = 500;
 copy = 10000;
 X_real = randn(d,1);
 X_real = X_real - mean(X_real);
@@ -25,7 +25,9 @@ X_real = X_real - mean(X_real);
         rand_runtime = zeros(length(noise),iter+1);
         spectral_runtime = zeros(length(noise),iter+1);
 for a = 1:length(noise)
+        fprintf('Noise Level: %d\n', sigma(a));
         for q = 1:iter
+            fprintf('Iteration: %d\n', q);
         % generate observations 
         
         Y = get_observations(X_real, sigma(a), copy, 41);
@@ -39,7 +41,7 @@ for a = 1:length(noise)
 
         
         % compute Bispectrum matrix
-        B_mat = get_bispectrum(Y_hat,41,copy);
+        B_mat = get_bispectrum(Y_hat);
         
         % Power estimate and phase estimate 
         

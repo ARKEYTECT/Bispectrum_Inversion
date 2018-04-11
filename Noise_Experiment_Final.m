@@ -42,8 +42,6 @@ X_real = X_real - mean(X_real);
 bias = 0.1;
 x_jenn = X_real + bias;
 
-[ M1, M2 ] = bispec_precomp(d);
- 
 for  a = 1:length(noise)
     fprintf('Noise Level: %d\n', sigma(a));
     for b = 1:iter  
@@ -59,7 +57,7 @@ for  a = 1:length(noise)
         
         [Y,shifts] = get_observations(X_real, sigma(a), copy, d); 
         
-        tic;
+        %tic;
         Emean = mean(mean(Y));
         mean_est = mean(Y);
         mean_est = repmat(mean_est,d,1);
@@ -67,12 +65,12 @@ for  a = 1:length(noise)
         Y_hat = fft(Y,[],1);   
         Y_power = mean(abs(Y_hat).^2,2)-d*sigma(a)^2;
         Y_power = max(0, Y_power);
-        t_power = toc;
+        %t_power = toc;
 
-        [ meanB, ~ ] = get_bispectrum_v2(Y_hat, M1, M2);
-        tic;
+        meanB = get_bispectrum(Y_hat);
+        %tic;
         B_phase = get_B_phase(meanB);
-        t_bphase = toc;
+        %t_bphase = toc;
         
         %%% Phase Recovery & Reconstruction
         
@@ -80,21 +78,21 @@ for  a = 1:length(noise)
         tic
         Est_phase_1 = get_phase_from_bispectrum_gap(B_phase,d); 
         X_Recon_1 = get_recon(Emean,Y_power,Est_phase_1);
-        runtime1(b+1,a) = t_power+t_bphase+toc; 
+        runtime1(b+1,a) = toc; 
         X_Recon_1 = align_signal(X_Recon_1,X_real);
         
         % phase from iterative phase sync
         tic
         Est_phase_2 = phases_from_bispectrum_APS_real(meanB); 
         X_Recon_2 = get_recon(Emean,Y_power,Est_phase_2);
-        runtime3(b+1,a) = t_power+t_bphase+toc; 
+        runtime3(b+1,a) = toc; 
         X_Recon_2 = align_signal(X_Recon_2,X_real);
         
         % Optim. on phase manifold
         tic
         [Est_phase_3, problem] = phases_from_bispectrum_real(meanB,1); 
         X_Recon_3 = get_recon(Emean,Y_power,Est_phase_3);
-        runtime4(b+1,a) = t_power+t_bphase+toc; 
+        runtime4(b+1,a) = toc; 
         X_Recon_3 = align_signal(X_Recon_3,X_real);
         
         % Freq. marching
@@ -102,23 +100,21 @@ for  a = 1:length(noise)
         tic
         Est_phase_5 = phases_from_bispectrum_FM_real(meanB,sign(y(1)), sign(y(2))); 
         X_Recon_5 = get_recon(Emean,Y_power,Est_phase_5);
-        runtime5(b+1,a) = t_power+t_bphase+toc; 
+        runtime5(b+1,a) = toc; 
         X_Recon_5 = align_signal(X_Recon_5,X_real);
         
         % Phase Unwrapping
-        y = fft(X_real);
         tic
         Est_phase_6 = phases_from_bispectrum_LLL_real(meanB,sign(y(1)), sign(y(2))); 
         X_Recon_6 = get_recon(Emean,Y_power,Est_phase_6);
-        runtime6(b+1,a) = t_power+t_bphase+toc; 
+        runtime6(b+1,a) = toc; 
         X_Recon_6 = align_signal(X_Recon_6,X_real);
         
         % SDP
-        y = fft(X_real);
         tic
         Est_phase_7 = phases_from_bispectrum_SDP_real(meanB,sign(y(1)), sign(y(2))); 
         X_Recon_7 = get_recon(Emean,Y_power,Est_phase_7);
-        runtime7(b+1,a) = t_power+t_bphase+toc; 
+        runtime7(b+1,a) = toc; 
         X_Recon_7 = align_signal(X_Recon_7,X_real);
         
         %%% Compute X_oracle
@@ -165,6 +161,7 @@ for  a = 1:length(noise)
     r_error_6(a) = r_error_6(a)/iter;
     r_error_7(a) = r_error_7(a)/iter;
     r_error_8(a) = r_error_8(a)/iter;
+    
     runtime1(1,a) = median(runtime1(2:end,a));
     runtime2(1,a) = median(runtime2(2:end,a));
     runtime3(1,a) = median(runtime3(2:end,a));
@@ -210,7 +207,7 @@ loglog(noise,runtime6(1,:),'c--','linewidth',1);
 loglog(noise,runtime7(1,:),'--','Color',[0.9 0.4 0.4],'linewidth',1);
 xlabel('Noise level \sigma^2');
 ylabel('Total computation time(s)');
-axis([0.01 25 0.001 100000]);
+ axis([0.01 25 0.0001 100]);
 lgd = legend('Spectral method','Jennrich Algorithm',...,
        'Iterative phase sync.','Optim. on phase manifold',..., 
        'FM','Phase unwrapping','SDP','Location','best');
